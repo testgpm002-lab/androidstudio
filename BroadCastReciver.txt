@@ -1,0 +1,29 @@
+MainActivity.kt
+package com.example.broadcastresver
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Gravity
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        var manager =applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var info = manager.activeNetworkInfo
+        if (info != null && info.isConnected) {
+            if (info.type == ConnectivityManager.TYPE_MOBILE) {
+                Toast.makeText(this, "connected to mobile device", Toast.LENGTH_LONG).show()}
+            if (info.type == ConnectivityManager.TYPE_WIFI) {
+                var tost = Toast.makeText(this, "connected to WIFI", Toast.LENGTH_LONG)
+                tost.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0)
+                tost.show()
+            } else {
+                var dialog = AlertDialog.Builder(this)
+                dialog.setTitle("NO Internet")
+                dialog.setMessage("Please check your Connection ")
+                dialog.setIcon(R.drawable.network)
+                dialog.create()
+                dialog.show()}}}}

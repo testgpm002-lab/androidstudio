@@ -1,0 +1,319 @@
+Main_Activity .xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView
+                android:text="User Id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+            <EditText
+                android:id="@+id/u_id"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginStart="20sp"
+                android:width="150px" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="User Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+            <EditText
+                android:id="@+id/u_name"
+                android:width="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginStart="20sp"
+                android:layout_marginLeft="20sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="User Email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+            <EditText
+                android:id="@+id/u_email"
+                android:width="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginStart="20sp"
+                android:layout_marginLeft="20sp" />
+        </TableRow>
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="350sp"
+        android:layout_marginTop="20sp">
+        <ListView
+            android:id="@+id/listView"
+            android:divider="#F80522"
+            android:dividerHeight="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="350sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40sp"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textColor="@android:color/white"
+            android:background="#D60B50"
+            android:onClick="saveRecord"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View"
+            android:textColor="@android:color/white"
+            android:background="#0CB311"
+            android:onClick="viewRecord"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:textColor="@android:color/white"
+            android:background="#DA8E1E"
+            android:onClick="updateRecord"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textColor="@android:color/white"
+            android:background="#2A098D"
+            android:onClick="deleteRecord"/>
+    </LinearLayout>
+</LinearLayout>
+
+CustomList.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout">
+    <TextView
+        android:id="@+id/textViewId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Id"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+</LinearLayout>
+
+MainActivity.kt
+package com.example.database
+import android.content.DialogInterface
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import kotlinx.android.synthetic.main.activity_main.*
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)    
+    }
+    fun saveRecord(view: View){
+        val id = u_id.text.toString()
+        val name = u_name.text.toString()
+        val email = u_email.text.toString()
+        val databaseHandler: DatabaseHandler= DatabaseHandler(this)
+        if(id.trim()!="" && name.trim()!="" && email.trim()!=""){
+            val status = databaseHandler.addEmployee(EmpModelClass(Integer.parseInt(id),name, email))
+            if(status > -1){
+                Toast.makeText(applicationContext,"record save",Toast.LENGTH_LONG).show()
+                u_id.text.clear()
+                u_name.text.clear()
+                u_email.text.clear()
+            } }else{
+            Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()}}
+    fun viewRecord(view: View){
+        val databaseHandler: DatabaseHandler= DatabaseHandler(this)
+        val emp: List<EmpModelClass> = databaseHandler.viewEmployee()
+        val empArrayId = Array<String>(emp.size){"0"}
+        val empArrayName = Array<String>(emp.size){"null"}
+        val empArrayEmail = Array<String>(emp.size){"null"}
+        var index = 0
+        for(e in emp){
+            empArrayId[index] = e.userId.toString()
+            empArrayName[index] = e.userName
+            empArrayEmail[index] = e.userEmail
+            index++}
+        val myListAdapter = MyListAdapter(this,empArrayId,empArrayName,empArrayEmail)
+        listView.adapter = myListAdapter}
+    fun updateRecord(view: View){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.update_dialog, null)
+        dialogBuilder.setView(dialogView)
+        val edtId = dialogView.findViewById(R.id.updateId) as EditText
+        val edtName = dialogView.findViewById(R.id.updateName) as EditText
+        val edtEmail = dialogView.findViewById(R.id.updateEmail) as EditText
+        dialogBuilder.setTitle("Update Record")
+        dialogBuilder.setMessage("Enter data below")
+        dialogBuilder.setPositiveButton("Update", DialogInterface.OnClickListener { _, _ ->
+            val updateId = edtId.text.toString()
+            val updateName = edtName.text.toString()
+            val updateEmail = edtEmail.text.toString()
+            val databaseHandler: DatabaseHandler= DatabaseHandler(this)
+            if(updateId.trim()!="" && updateName.trim()!="" && updateEmail.trim()!=""){
+                val status = databaseHandler.updateEmployee(EmpModelClass(Integer.parseInt(updateId),updateName, updateEmail))
+                if(status > -1){
+                    Toast.makeText(applicationContext,"record update",Toast.LENGTH_LONG).show()}}else{
+                Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()
+            }})
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
+        })
+        val b =dialogBuilder.create()
+        b.show()
+    }
+    fun deleteRecord(view: View){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.delete_dialog, null)
+        dialogBuilder.setView(dialogView)
+        val dltId=dialogView.findViewById(R.id.deleteId) as EditText
+        dialogBuilder.setTitle("Delete Record")
+        dialogBuilder.setMessage("Enter id below")
+        dialogBuilder.setPositiveButton("Delete",DialogInterface.OnClickListener { _, _ ->
+            val deleteId = dltId.text.toString()
+            val databaseHandler: DatabaseHandler= DatabaseHandler(this)
+            if(deleteId.trim()!=""){
+                val status = databaseHandler.deleteEmployee(EmpModelClass(Integer.parseInt(deleteId),"",""))
+                if(status > -1){
+                    Toast.makeText(applicationContext,"record deleted",Toast.LENGTH_LONG).show()}
+            }else{
+                Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()}
+        })
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
+            //pass
+        })
+        val b =dialogBuilder.create()
+        b.show()}}
+
+DatabaseHandler.kt
+package com.example.database
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.content.ContentValues
+import android.database.Cursor
+import android.database.sqlite.SQLiteException
+class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DATABASE_VERSION) {
+    companion object {
+        private val DATABASE_VERSION = 1
+        private val DATABASE_NAME = "EmployeeDatabase"
+        private val TABLE_CONTACTS = "EmployeeTable"
+        private val KEY_ID = "id"
+        private val KEY_NAME = "name"
+        private val KEY_EMAIL = "email"
+    }
+    override fun onCreate(db: SQLiteDatabase?) {
+        val CREATE_CONTACTS_TABLE = ("CREATE TABLE " + TABLE_CONTACTS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
+                + KEY_EMAIL + " TEXT" + ")")
+        db?.execSQL(CREATE_CONTACTS_TABLE)}
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        db!!.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS)
+        onCreate(db)}
+    fun addEmployee(emp: EmpModelClass):Long{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_ID, emp.userId)
+        contentValues.put(KEY_NAME, emp.userName) // EmpModelClass Name
+        contentValues.put(KEY_EMAIL,emp.userEmail ) // EmpModelClass Phone
+        val success = db.insert(TABLE_CONTACTS, null, contentValues)
+        db.close()
+        return success}
+    fun viewEmployee():List<EmpModelClass>{
+        val empList:ArrayList<EmpModelClass> = ArrayList<EmpModelClass>()
+        val selectQuery = "SELECT  * FROM $TABLE_CONTACTS"
+        val db = this.readableDatabase
+        var cursor: Cursor? = null
+        try{
+            cursor = db.rawQuery(selectQuery, null)
+        }catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return ArrayList()}
+        var userId: Int
+        var userName: String
+        var userEmail: String
+        if (cursor.moveToFirst()) {
+            do {
+                userId = cursor.getInt(cursor.getColumnIndex("id"))
+                userName = cursor.getString(cursor.getColumnIndex("name"))
+                userEmail = cursor.getString(cursor.getColumnIndex("email"))
+                val emp= EmpModelClass(userId = userId, userName = userName, userEmail = userEmail)
+                empList.add(emp)
+            } while (cursor.moveToNext())}
+        return empList}
+    fun updateEmployee(emp: EmpModelClass):Int{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_ID, emp.userId)
+        contentValues.put(KEY_NAME, emp.userName)
+        contentValues.put(KEY_EMAIL,emp.userEmail 
+        val success = db.update(TABLE_CONTACTS, contentValues,"id="+emp.userId,null)
+        db.close()
+        return success}
+    fun deleteEmployee(emp: EmpModelClass):Int{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_ID, emp.userId) // EmpModelClass UserId
+        val success = db.delete(TABLE_CONTACTS,"id="+emp.userId,null)
+        db.close()
+        return success}}
+Mylistadapter.kt
+package com.example.database
+import android.app.Activity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
+class MyListAdapter(private val context: Activity, private val id: Array<String>, private val name: Array<String>, private val email: Array<String>)
+    : ArrayAdapter<String>(context, R.layout.custom_list, name) {
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+        val inflater = context.layoutInflater
+        val rowView = inflater.inflate(R.layout.custom_list, null, true)
+        val idText = rowView.findViewById(R.id.textViewId) as TextView
+        val nameText = rowView.findViewById(R.id.textViewName) as TextView
+        val emailText = rowView.findViewById(R.id.textViewEmail) as TextView
+        idText.text = "Id: ${id[position]}"
+        nameText.text = "Name: ${name[position]}"
+        emailText.text = "Email: ${email[position]}"
+        return rowView
+    }}

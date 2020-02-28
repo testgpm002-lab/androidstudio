@@ -1,0 +1,48 @@
+Activity main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<androidx.appcompat.widget.Toolbar
+    android:layout_width="match_parent"
+    android:id="@+id/toolbar"
+    android:layout_height="wrap_content">
+</androidx.appcompat.widget.Toolbar>
+</LinearLayout>
+Menu.xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:title="Home"
+    app:showAsAction="never"
+    android:id="@+id/menu_home">
+</item>
+    <item android:title="Setting"
+        app:showAsAction="never"
+        android:id="@+id/menu_setting">
+    </item>
+    <item android:title="About"
+        app:showAsAction="never"
+        android:id="@+id/menu_about">
+    </item>
+</menu>
+ MainActivity.kt
+package com.example.myapplication121
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.widget.Toolbar
+class MainActivity : AppCompatActivity() {
+    var toolbar: Toolbar?=null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        toolbar=findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)}
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu,menu)
+        return true
+    }}

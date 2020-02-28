@@ -1,0 +1,32 @@
+MainActivity.kt
+package com.example.f_pra_2
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.FrameLayout
+class MainActivity : AppCompatActivity() {
+lateinit var btn1:Button
+    lateinit var btn2:Button
+    lateinit var frm:FrameLayout
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    btn1=findViewById(R.id.btn1)
+        btn2=findViewById(R.id.btn2)
+        frm=findViewById(R.id.frm)
+        btn1.setOnClickListener({
+            var manager=supportFragmentManager
+            var trans=manager.beginTransaction()
+            var obj=frm1()
+            trans.replace(R.id.frm,obj)
+            trans.addToBackStack(null)
+            trans.commit()
+        })
+        btn2.setOnClickListener({
+            var manager1=supportFragmentManager
+            var trans1=manager1.beginTransaction()
+            var obj1=frm2()
+            trans1.replace(R.id.frm,obj1)
+            trans1.addToBackStack(null)
+            trans1.commit()
+        }) }}

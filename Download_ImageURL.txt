@@ -1,0 +1,43 @@
+ActivityMain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+   <ImageView
+       android:layout_width="match_parent"
+       android:layout_height="400dp"
+       android:id="@+id/img">
+   </ImageView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#010D1A"
+        android:textColor="#CEE0F1"
+        android:id="@+id/btn"
+        android:text="Click"
+        android:textSize="35dp">
+    </Button></LinearLayout>
+MainActivity.kt
+package com.example.img
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
+class MainActivity : AppCompatActivity() {
+lateinit var img:ImageView
+    lateinit var btn:Button
+    var url:String="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSP6vtgEaRQwVjMdCpgmh4iMDBfJ2PzHO084eTZSHQUsvlFAdnF"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        img=findViewById(R.id.img)
+        var btn=findViewById(R.id.btn)as Button
+        btn.setOnClickListener({
+            Picasso.get().load(url).into(img)
+        })
+    }}
