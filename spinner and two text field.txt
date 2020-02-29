@@ -1,0 +1,36 @@
+ActivityMain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <Spinner
+        android:id="@+id/mySpinner"
+        android:layout_height="50dp"
+        android:layout_width="match_parent" />
+</LinearLayout>
+
+MainActivity.kt
+package com.example.myapplication
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val nebulae = arrayOf<String>("Boomerang", "Orion", "Witch Head", "Ghost Head", "Black Widow", "Flame", "Cone","Pelican","Helix","Snake","Elephant's Trunk")
+        var adapter= ArrayAdapter(this,android.R.layout.simple_list_item_1,nebulae)
+        mySpinner.adapter=adapter
+        mySpinner.onItemSelectedListener = object :AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view:View, i: Int, l: Long){
+                Toast.makeText(this@MainActivity, nebulae[i], Toast.LENGTH_SHORT).show() }
+            override fun onNothingSelected(adapterView: AdapterView<*>) { }} }}

@@ -1,0 +1,42 @@
+ActivityMain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="enter_something"
+        android:padding="10dp"/>
+    <Button
+        android:id="@+id/btnShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show_text">
+    </Button>
+    </LinearLayout>
+Main_Activity.kt
+package com.example.textview
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val btnShow = findViewById<Button>(R.id.btnShow)
+        btnShow?.setOnClickListener { showText() }}
+    private fun showText() {
+        val editText = findViewById<EditText>(R.id.editText)
+        if (editText != null) {
+            Toast.makeText(this, editText.text, Toast.LENGTH_LONG).show()
+        }
+    }}

@@ -1,0 +1,55 @@
+Activity Main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:layout_margin="10dp"
+    android:padding="30dp"
+    android:orientation="vertical">
+<EditText
+    android:layout_width="match_parent"
+    android:id="@+id/edt_user"
+    android:hint="Enter your username"
+    android:layout_height="wrap_content">
+</EditText>
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/edt_pasas"
+        android:hint=" Enter your password"
+        android:layout_height="wrap_content">
+    </EditText>
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/btn_submit"
+        android:text="LOGIN"
+        android:textSize="20dp"
+        android:textColor="#F7F9FA"
+        android:textStyle="bold"
+        android:background="#A20634"
+        android:layout_height="wrap_content">
+    </Button></LinearLayout>
+Main Activity.kt
+package com.example.myapplication
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val data1=findViewById<EditText>(R.id.edt_user)
+        val data2=findViewById<EditText>(R.id.edt_pasas)
+        val butn=findViewById<Button>(R.id.btn_submit)
+        butn.setOnClickListener({
+            if(data1.text.toString().equals(data2.text.toString()))
+                Toast.makeText(this,"sucess",Toast.LENGTH_LONG).show()
+            else
+                Toast.makeText(this,"Error",Toast.LENGTH_LONG).show()
+        })}}
+
